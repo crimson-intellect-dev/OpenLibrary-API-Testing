@@ -1,18 +1,16 @@
-# OpenLibrary-API-Testing
-API Testing project using Postman &amp; Newman for Open Library API. Includes test cases for status codes, response validation, pagination, and performance.
+# 📚 Open Library API Testing with Postman & Newman
 
-# Open Library API Testing with Postman & Newman
+## 🔍 Overview
+This project demonstrates **API testing using Postman & Newman** on the **Open Library API**.  
+It covers various test cases, including:
+- ✅ **Status Code Validation**
+- ✅ **Response Body Verification**
+- ✅ **Pagination Testing**
+- ✅ **Performance Testing**
+- ✅ **Negative Testing for Invalid Requests**
 
-## 📌 Overview
-This project tests the Open Library API using Postman & Newman.  
-It includes test cases for:
-✅ Status Code Validation  
-✅ Response Body Verification  
-✅ Pagination Testing  
-✅ Performance Testing  
-
-## 🚀 Running the Tests
-To run this collection using Newman:
-```bash
-newman run OpenLibrary-API-Testing.json
-
+## 🚀 How to Run the Tests
+### 1️⃣ **Manual Testing in Postman**
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/crimson-intellect-dev/OpenLibrary-API-Testing.git
