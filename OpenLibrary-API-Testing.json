@@ -1,0 +1,304 @@
+{
+	"info": {
+		"_postman_id": "eb5de723-993e-4cfe-a0d5-81a6002b1c30",
+		"name": "Open Library API Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18542901",
+		"_collection_link": "https://www.postman.com/blue-space-729472/workspace/janani-ravi-fundamental-of-api-testing/collection/18542901-eb5de723-993e-4cfe-a0d5-81a6002b1c30?action=share&source=collection_link&creator=18542901"
+	},
+	"item": [
+		{
+			"name": "Search by Book's Name",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://openlibrary.org/search.json?q=lord+of+the+rings",
+					"protocol": "https",
+					"host": [
+						"openlibrary",
+						"org"
+					],
+					"path": [
+						"search.json"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "lord+of+the+rings"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search for a specific author",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://openlibrary.org/search.json?author=george+orwell",
+					"protocol": "https",
+					"host": [
+						"openlibrary",
+						"org"
+					],
+					"path": [
+						"search.json"
+					],
+					"query": [
+						{
+							"key": "author",
+							"value": "george+orwell"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Test pagination (page 2 results)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://openlibrary.org/search.json?q=science&page=4",
+					"protocol": "https",
+					"host": [
+						"openlibrary",
+						"org"
+					],
+					"path": [
+						"search.json"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "science"
+						},
+						{
+							"key": "page",
+							"value": "4"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Test Case 1: Status Code Validation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://openlibrary.org/search.json?q=harry+potter",
+					"protocol": "https",
+					"host": [
+						"openlibrary",
+						"org"
+					],
+					"path": [
+						"search.json"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "harry+potter"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Test Case 2: Check If numFound is Greater Than 0",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"numFound is greater than 0\", function () {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(jsonData.numFound).to.be.above(0);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://openlibrary.org/search.json?q=harry+potter",
+					"protocol": "https",
+					"host": [
+						"openlibrary",
+						"org"
+					],
+					"path": [
+						"search.json"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "harry+potter"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Test Case 3: Search for a Non-Existent Book",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"numFound should be 0 for non-existent books\", function () {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(jsonData.numFound).to.eql(0);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://openlibrary.org/search.json?q=xyzabc123",
+					"protocol": "https",
+					"host": [
+						"openlibrary",
+						"org"
+					],
+					"path": [
+						"search.json"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "xyzabc123"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Test Case 4: Ensure start Changes on Page Navigation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Start value changes for different pages\", function () {",
+							"    let jsonData = pm.response.json();",
+							"    let startValuePage1 = jsonData.start;",
+							"    ",
+							"    pm.sendRequest(\"https://openlibrary.org/search.json?q=harry+potter&page=2\", function (err, res) {",
+							"        let jsonDataPage2 = res.json();",
+							"        let startValuePage2 = jsonDataPage2.start;",
+							"        ",
+							"        pm.expect(startValuePage2).to.be.above(startValuePage1);",
+							"    });",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://openlibrary.org/search.json?q=harry+potter&page=1",
+					"protocol": "https",
+					"host": [
+						"openlibrary",
+						"org"
+					],
+					"path": [
+						"search.json"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "harry+potter"
+						},
+						{
+							"key": "page",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Test Case 5: API Response Time Under 2 Seconds",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response time is under 2000ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://openlibrary.org/search.json?q=harry+potter&page=1",
+					"protocol": "https",
+					"host": [
+						"openlibrary",
+						"org"
+					],
+					"path": [
+						"search.json"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "harry+potter"
+						},
+						{
+							"key": "page",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
